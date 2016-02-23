@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Welcome</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+
+<table id="tb-main">
+    <tr th:text="${title}"></tr>
+    <tr>
+        <td width="40">Time</td>
+        <td th:text="': '+${time}"></td>
+    </tr>
+    <tr>
+        <td width="40">Info</td>
+        <td th:text="': '+${info}"></td>
+    </tr>
+</table>
+</body>
+</html>
