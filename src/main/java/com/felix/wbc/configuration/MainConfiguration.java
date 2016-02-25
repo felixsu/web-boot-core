@@ -1,4 +1,4 @@
-package com.felix.wbc.config;
+package com.felix.wbc.configuration;
 
 import org.springframework.stereotype.Component;
 
@@ -7,5 +7,5 @@ import org.springframework.stereotype.Component;
  */
 
 @Component
-public class MainConfig {
+public class MainConfiguration {
 }
