@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/MyBootCore.iml" filepath="$PROJECT_DIR$/MyBootCore.iml" />
+      <module fileurl="file://$PROJECT_DIR$/raspi-boot-service.iml" filepath="$PROJECT_DIR$/raspi-boot-service.iml" />
     </modules>
   </component>
 </project>

@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="MyBootCore:war">
-    <output-path>$PROJECT_DIR$/target</output-path>
-    <root id="archive" name="web-boot-core-1.0.war">
-      <element id="artifact" artifact-name="MyBootCore:war exploded" />
-    </root>
-  </artifact>
-</component>

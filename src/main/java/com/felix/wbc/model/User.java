@@ -1,11 +1,12 @@
 package com.felix.wbc.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.felix.wbc.constant.TableConstant;
 import org.hibernate.validator.constraints.Email;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by fsoewito on 2/23/2016.
@@ -15,24 +16,48 @@ import javax.persistence.Table;
 @Table(name = "data_user")
 public class User {
 
-    private static final String COL_USERNAME = "username";
-    private static final String COL_EMAIL = "email";
-    private static final String COL_PASSWORD = "password";
-
-    private static final int LEN_USERNAME = 50;
-    private static final int LEN_EMAIL = 50;
-    private static final int LEN_PASSWORD = 500;
+    private static final long serialVersionUID = 1L;
 
     @Id
-    @Column(name = COL_USERNAME, nullable = false, length = LEN_USERNAME)
+    @SequenceGenerator(name = "data_user_id_seq", sequenceName = "data_user_id_seq")
+    @GeneratedValue(generator = "data_user_id_seq")
+    @Column(name = TableConstant.COL_ID, nullable = false)
+    private Integer id;
+
+    @Column(name = TableConstant.COL_USERNAME, nullable = false, length = TableConstant.LEN_USERNAME)
     private String username;
 
     @Email
-    @Column(name = COL_EMAIL, nullable = false, length = LEN_EMAIL)
+    @Column(name = TableConstant.COL_EMAIL, nullable = false, length = TableConstant.LEN_EMAIL)
     private String email;
 
-    @Column(name = COL_PASSWORD, nullable = false, length = LEN_PASSWORD)
+    @Column(name = TableConstant.COL_PASSWORD, nullable = false, length = TableConstant.LEN_PASSWORD)
     private String password;
+
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_role", joinColumns = {@JoinColumn(name = "user_id")}, inverseJoinColumns = {@JoinColumn(name = "role_id")})
+    private Set<Role> roles = new HashSet<Role>();
+
+    public User() {
+    }
+
+    public User(User user) {
+        super();
+        this.id = user.getId();
+        this.username = user.getUsername();
+        this.email = user.getEmail();
+        this.password = user.getPassword();
+        this.roles = user.getRoles();
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getUsername() {
         return username;
@@ -56,5 +81,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 }

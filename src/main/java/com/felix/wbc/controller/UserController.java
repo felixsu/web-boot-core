@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 
 @Controller
-@RequestMapping(value = "/person")
+@RequestMapping(value = "/user")
 public class UserController extends GenericController<User, String> {
 
     private UserService service;
@@ -20,6 +20,11 @@ public class UserController extends GenericController<User, String> {
     public UserController(UserService service) {
         super(service);
         this.service = service;
+    }
+
+    @RequestMapping("/users")
+    public Iterable<User> getUsers() {
+        return service.findAll();
     }
 
 

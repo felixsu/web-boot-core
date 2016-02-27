@@ -23,10 +23,12 @@
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
         <module name="MyBootCore" />
+        <module name="raspi-boot-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="MyBootCore" target="1.8" />
+      <module name="raspi-boot-service" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
