@@ -4,7 +4,7 @@
 
 -- Dumped from database version 9.4.5
 -- Dumped by pg_dump version 9.4.5
--- Started on 2016-03-01 17:12:42
+-- Started on 2016-03-01 17:17:50
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -13,7 +13,218 @@ SET standard_conforming_strings = on;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
 
+--
+-- TOC entry 2060 (class 1262 OID 17123)
+-- Name: felixsu; Type: DATABASE; Schema: -; Owner: postgres
+--
+
+CREATE DATABASE felixsu WITH TEMPLATE = template0 ENCODING = 'UTF8' LC_COLLATE = 'English_United States.1252' LC_CTYPE = 'English_United States.1252';
+
+
+ALTER DATABASE felixsu OWNER TO postgres;
+
+\connect felixsu
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- TOC entry 183 (class 3079 OID 11855)
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- TOC entry 2063 (class 0 OID 0)
+-- Dependencies: 183
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
 SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- TOC entry 178 (class 1259 OID 18888)
+-- Name: authorities; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE authorities (
+    id integer NOT NULL,
+    authority character varying(50) NOT NULL
+);
+
+
+ALTER TABLE authorities OWNER TO postgres;
+
+--
+-- TOC entry 174 (class 1259 OID 18862)
+-- Name: oauth_access_token; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE oauth_access_token (
+    token_id character varying(256),
+    token bytea,
+    authentication_id character varying(256) NOT NULL,
+    user_name character varying(256),
+    client_id character varying(256),
+    authentication bytea,
+    refresh_token character varying(256)
+);
+
+
+ALTER TABLE oauth_access_token OWNER TO postgres;
+
+--
+-- TOC entry 177 (class 1259 OID 18882)
+-- Name: oauth_approvals; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE oauth_approvals (
+    userid character varying(256),
+    clientid character varying(256),
+    scope character varying(256),
+    status character varying(10),
+    expiresat timestamp without time zone,
+    lastmodifiedat timestamp without time zone
+);
+
+
+ALTER TABLE oauth_approvals OWNER TO postgres;
+
+--
+-- TOC entry 172 (class 1259 OID 18845)
+-- Name: oauth_client_details; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE oauth_client_details (
+    client_id character varying(256) NOT NULL,
+    resource_ids character varying(256),
+    client_secret character varying(256),
+    scope character varying(256),
+    authorized_grant_types character varying(256),
+    web_server_redirect_uri character varying(256),
+    authorities character varying(256),
+    access_token_validity integer,
+    refresh_token_validity integer,
+    additional_information character varying(4096),
+    autoapprove character varying(256)
+);
+
+
+ALTER TABLE oauth_client_details OWNER TO postgres;
+
+--
+-- TOC entry 173 (class 1259 OID 18854)
+-- Name: oauth_client_token; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE oauth_client_token (
+    token_id character varying(256),
+    token bytea,
+    authentication_id character varying(256) NOT NULL,
+    user_name character varying(256),
+    client_id character varying(256)
+);
+
+
+ALTER TABLE oauth_client_token OWNER TO postgres;
+
+--
+-- TOC entry 176 (class 1259 OID 18876)
+-- Name: oauth_code; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE oauth_code (
+    code character varying(256),
+    authentication bytea
+);
+
+
+ALTER TABLE oauth_code OWNER TO postgres;
+
+--
+-- TOC entry 175 (class 1259 OID 18870)
+-- Name: oauth_refresh_token; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE oauth_refresh_token (
+    token_id character varying(256),
+    token bytea,
+    authentication bytea
+);
+
+
+ALTER TABLE oauth_refresh_token OWNER TO postgres;
+
+--
+-- TOC entry 181 (class 1259 OID 18916)
+-- Name: seq_authorities_id; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE seq_authorities_id
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE seq_authorities_id OWNER TO postgres;
+
+--
+-- TOC entry 182 (class 1259 OID 18918)
+-- Name: seq_users_id; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE seq_users_id
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE seq_users_id OWNER TO postgres;
+
+--
+-- TOC entry 179 (class 1259 OID 18893)
+-- Name: user_role; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE user_role (
+    user_id integer NOT NULL,
+    role_id integer NOT NULL
+);
+
+
+ALTER TABLE user_role OWNER TO postgres;
+
+--
+-- TOC entry 180 (class 1259 OID 18898)
+-- Name: users; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE users (
+    id integer NOT NULL,
+    email character varying(50) NOT NULL,
+    password character varying(500) NOT NULL,
+    username character varying(50) NOT NULL
+);
+
+
+ALTER TABLE users OWNER TO postgres;
 
 --
 -- TOC entry 2051 (class 0 OID 18888)
@@ -121,7 +332,91 @@ INSERT INTO users (id, email, password, username) VALUES (3, 'greg@test.com', 's
 INSERT INTO users (id, email, password, username) VALUES (4, 'felix@test.com', 'spring', 'felix');
 
 
--- Completed on 2016-03-01 17:12:43
+--
+-- TOC entry 1929 (class 2606 OID 18892)
+-- Name: authorities_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY authorities
+    ADD CONSTRAINT authorities_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 1927 (class 2606 OID 18869)
+-- Name: oauth_access_token_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY oauth_access_token
+    ADD CONSTRAINT oauth_access_token_pkey PRIMARY KEY (authentication_id);
+
+
+--
+-- TOC entry 1923 (class 2606 OID 18852)
+-- Name: oauth_client_details_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY oauth_client_details
+    ADD CONSTRAINT oauth_client_details_pkey PRIMARY KEY (client_id);
+
+
+--
+-- TOC entry 1925 (class 2606 OID 18861)
+-- Name: oauth_client_token_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY oauth_client_token
+    ADD CONSTRAINT oauth_client_token_pkey PRIMARY KEY (authentication_id);
+
+
+--
+-- TOC entry 1931 (class 2606 OID 18897)
+-- Name: user_role_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY user_role
+    ADD CONSTRAINT user_role_pkey PRIMARY KEY (user_id, role_id);
+
+
+--
+-- TOC entry 1933 (class 2606 OID 18905)
+-- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 1935 (class 2606 OID 18911)
+-- Name: fk_apcc8lxk2xnug8377fatvbn04; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY user_role
+    ADD CONSTRAINT fk_apcc8lxk2xnug8377fatvbn04 FOREIGN KEY (user_id) REFERENCES users(id);
+
+
+--
+-- TOC entry 1934 (class 2606 OID 18906)
+-- Name: fk_it77eq964jhfqtu54081ebtio; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY user_role
+    ADD CONSTRAINT fk_it77eq964jhfqtu54081ebtio FOREIGN KEY (role_id) REFERENCES authorities(id);
+
+
+--
+-- TOC entry 2062 (class 0 OID 0)
+-- Dependencies: 5
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+-- Completed on 2016-03-01 17:17:50
 
 --
 -- PostgreSQL database dump complete
