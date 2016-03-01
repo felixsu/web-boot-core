@@ -1,12 +1,15 @@
 package com.felix.wbc.repository;
 
-import com.felix.wbc.model.User;
+import com.felix.wbc.model.Users;
+import org.springframework.stereotype.Repository;
 
 /**
  * Created by fsoewito on 2/25/2016.
  */
-public interface UserRepository extends GenericRepository<User, String> {
-    User findByUsername(String username);
 
-    User findByEmail(String email);
+@Repository
+public interface UserRepository extends GenericRepository<Users, Integer> {
+    Users findByUsername(String username);
+
+    Users findByEmail(String email);
 }

@@ -1,7 +1,9 @@
 package com.felix.wbc.service;
 
-import com.felix.wbc.model.User;
+import com.felix.wbc.model.Users;
 import com.felix.wbc.repository.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,34 +19,41 @@ import java.util.Collection;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
-
-    private final UserRepository userRepository;
+    private static final Logger LOGGER = LoggerFactory.getLogger(CustomUserDetailsService.class.getName());
 
     @Autowired
-    public CustomUserDetailsService(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    private UserRepository userRepository;
+
+    public CustomUserDetailsService() {
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username);
-        if (user == null) {
+        LOGGER.info("Authenticating {}", username);
+        Users users = userRepository.findByUsername(username);
+        if (users == null) {
+            LOGGER.error("Authenticating username {} return null", username);
             throw new UsernameNotFoundException(String.format("User %s does not exist!", username));
         }
-        return new UserRepositoryUserDetails(user);
+        return new UserRepositoryUsersDetails(users);
     }
 
-    private final static class UserRepositoryUserDetails extends User implements UserDetails {
+    private final static class UserRepositoryUsersDetails extends Users implements UserDetails {
 
         private static final long serialVersionUID = 1L;
 
-        private UserRepositoryUserDetails(User user) {
-            super(user);
+        private UserRepositoryUsersDetails(Users users) {
+            super(users);
         }
 
         @Override
         public Collection<? extends GrantedAuthority> getAuthorities() {
-            return getRoles();
+            return super.getRoles();
+        }
+
+        @Override
+        public String getUsername() {
+            return super.getUsername();
         }
 
         @Override

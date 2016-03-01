@@ -1,6 +1,6 @@
 package com.felix.wbc.service;
 
-import com.felix.wbc.model.User;
+import com.felix.wbc.model.Users;
 import com.felix.wbc.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
  */
 
 @Service
-public class UserService extends GenericService<User, String> {
+public class UserService extends GenericService<Users, Integer> {
 
     @Autowired
     public UserService(UserRepository repository) {

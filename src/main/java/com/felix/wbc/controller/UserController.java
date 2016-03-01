@@ -1,6 +1,6 @@
 package com.felix.wbc.controller;
 
-import com.felix.wbc.model.User;
+import com.felix.wbc.model.Users;
 import com.felix.wbc.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping(value = "/user")
-public class UserController extends GenericController<User, String> {
+public class UserController extends GenericController<Users, Integer> {
 
     private UserService service;
 
@@ -23,7 +23,7 @@ public class UserController extends GenericController<User, String> {
     }
 
     @RequestMapping("/users")
-    public Iterable<User> getUsers() {
+    public Iterable<Users> getUsers() {
         return service.findAll();
     }
 

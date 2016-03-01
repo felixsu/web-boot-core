@@ -13,15 +13,15 @@ import java.util.Set;
  */
 
 @Entity
-@Table(name = "data_user")
-public class User {
+@Table(name = TableConstant.TABLE_USERS)
+public class Users {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @SequenceGenerator(name = "data_user_id_seq", sequenceName = "data_user_id_seq")
-    @GeneratedValue(generator = "data_user_id_seq")
-    @Column(name = TableConstant.COL_ID, nullable = false)
+    @SequenceGenerator(name = TableConstant.SEQ_USERS, sequenceName = TableConstant.SEQ_USERS)
+    @GeneratedValue(generator = TableConstant.SEQ_USERS)
+    @Column(name = TableConstant.COL_ID)
     private Integer id;
 
     @Column(name = TableConstant.COL_USERNAME, nullable = false, length = TableConstant.LEN_USERNAME)
@@ -36,19 +36,21 @@ public class User {
 
     @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_role", joinColumns = {@JoinColumn(name = "user_id")}, inverseJoinColumns = {@JoinColumn(name = "role_id")})
-    private Set<Role> roles = new HashSet<Role>();
+    @JoinTable(
+            name = TableConstant.TABLE_USERS_AUTHORITIES,
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "role_id")})
+    private Set<Authorities> roles = new HashSet<Authorities>();
 
-    public User() {
+    public Users() {
     }
 
-    public User(User user) {
-        super();
-        this.id = user.getId();
-        this.username = user.getUsername();
-        this.email = user.getEmail();
-        this.password = user.getPassword();
-        this.roles = user.getRoles();
+    public Users(Users users) {
+        this.id = users.getId();
+        this.username = users.getUsername();
+        this.email = users.getEmail();
+        this.password = users.getPassword();
+        this.roles = users.getRoles();
     }
 
     public Integer getId() {
@@ -83,11 +85,11 @@ public class User {
         this.password = password;
     }
 
-    public Set<Role> getRoles() {
+    public Set<Authorities> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<Role> roles) {
+    public void setRoles(Set<Authorities> roles) {
         this.roles = roles;
     }
 }
