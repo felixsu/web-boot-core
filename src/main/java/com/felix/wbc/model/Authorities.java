@@ -19,20 +19,25 @@ public class Authorities implements GrantedAuthority {
     public static final String GUEST = "GUEST";
     public static final String USER = "USER";
     public static final String ADMIN = "ADMIN";
+
     private static final long serialVersionUID = 1L;
+
     @Id
     @SequenceGenerator(name = TableConstant.SEQ_AUTHORITIES, sequenceName = TableConstant.SEQ_AUTHORITIES)
     @GeneratedValue(generator = TableConstant.SEQ_AUTHORITIES)
     @Column(name = TableConstant.COL_ID)
     private Integer id;
 
-    @NotEmpty
+    @Column(name = TableConstant.COL_USERNAME, nullable = false, length = TableConstant.LEN_USERNAME)
+    private String username;
+
     @Column(name = TableConstant.COL_AUTHORITY, nullable = false, length = TableConstant.LEN_AUTHORITY)
     private String authority;
 
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "roles")
-    private Set<Users> users;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = TableConstant.COL_ID, insertable = false, updatable = false)
+    private Users users;
 
     public Integer getId() {
         return id;
@@ -40,6 +45,14 @@ public class Authorities implements GrantedAuthority {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     @Override
@@ -51,11 +64,11 @@ public class Authorities implements GrantedAuthority {
         this.authority = authority;
     }
 
-    public Set<Users> getUsers() {
+    public Users getUsers() {
         return users;
     }
 
-    public void setUsers(Set<Users> users) {
+    public void setUsers(Users users) {
         this.users = users;
     }
 }

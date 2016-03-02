@@ -1,6 +1,5 @@
 package com.felix.wbc.security;
 
-import com.felix.wbc.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -5,6 +5,7 @@ import com.felix.wbc.constant.TableConstant;
 import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,7 +15,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = TableConstant.TABLE_USERS)
-public class Users {
+public class Users implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -35,12 +36,8 @@ public class Users {
     private String password;
 
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = TableConstant.TABLE_USERS_AUTHORITIES,
-            joinColumns = {@JoinColumn(name = "user_id")},
-            inverseJoinColumns = {@JoinColumn(name = "role_id")})
-    private Set<Authorities> roles = new HashSet<Authorities>();
+    @OneToMany(mappedBy = "users", fetch = FetchType.EAGER)
+    private Set<Authorities> roles = new HashSet<>();
 
     public Users() {
     }

@@ -1,17 +1,15 @@
-package com.felix.wbc.service;
+package com.felix.wbc.security;
 
+import com.felix.wbc.model.UserRepositoryUsersDetails;
 import com.felix.wbc.model.Users;
 import com.felix.wbc.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-import java.util.Collection;
 
 /**
  * Created by fsoewito on 2/26/2016.
@@ -35,46 +33,9 @@ public class CustomUserDetailsService implements UserDetailsService {
             LOGGER.error("Authenticating username {} return null", username);
             throw new UsernameNotFoundException(String.format("User %s does not exist!", username));
         }
-        return new UserRepositoryUsersDetails(users);
+        UserRepositoryUsersDetails result = new UserRepositoryUsersDetails(users);
+        return result;
     }
 
-    private final static class UserRepositoryUsersDetails extends Users implements UserDetails {
 
-        private static final long serialVersionUID = 1L;
-
-        private UserRepositoryUsersDetails(Users users) {
-            super(users);
-        }
-
-        @Override
-        public Collection<? extends GrantedAuthority> getAuthorities() {
-            return super.getRoles();
-        }
-
-        @Override
-        public String getUsername() {
-            return super.getUsername();
-        }
-
-        @Override
-        public boolean isAccountNonExpired() {
-            return true;
-        }
-
-        @Override
-        public boolean isAccountNonLocked() {
-            return true;
-        }
-
-        @Override
-        public boolean isCredentialsNonExpired() {
-            return true;
-        }
-
-        @Override
-        public boolean isEnabled() {
-            return true;
-        }
-
-    }
 }
