@@ -1,6 +1,5 @@
 package com.felix.wbc.security;
 
-import com.felix.wbc.model.UserRepositoryUsersDetails;
 import com.felix.wbc.model.Users;
 import com.felix.wbc.repository.UserRepository;
 import org.slf4j.Logger;
@@ -33,8 +32,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             LOGGER.error("Authenticating username {} return null", username);
             throw new UsernameNotFoundException(String.format("User %s does not exist!", username));
         }
-        UserRepositoryUsersDetails result = new UserRepositoryUsersDetails(users);
-        return result;
+        return users;
     }
 
 

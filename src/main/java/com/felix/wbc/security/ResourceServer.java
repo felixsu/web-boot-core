@@ -1,6 +1,7 @@
 package com.felix.wbc.security;
 
 import com.felix.wbc.model.Authorities;
+import com.felix.wbc.model.Authority;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -27,7 +28,7 @@ public class ResourceServer extends ResourceServerConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/users").hasRole(Authorities.ADMIN)
+                .antMatchers("/users").hasRole(Authority.ADMIN.name())
                 .antMatchers("/greeting").authenticated();
     }
 

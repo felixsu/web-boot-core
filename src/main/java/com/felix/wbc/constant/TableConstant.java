@@ -11,6 +11,7 @@ public class TableConstant {
     //    table name
     public static final String TABLE_USERS = "users";
     public static final String TABLE_AUTHORITIES = "authorities";
+    public static final String TABLE_USERS_AUTHORITIES = "users_authorities";
 
     //    COL NAME
     public static final String COL_ID = "id";

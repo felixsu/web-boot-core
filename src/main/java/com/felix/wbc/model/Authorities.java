@@ -6,6 +6,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -16,9 +17,9 @@ import java.util.Set;
 @Table(name = TableConstant.TABLE_AUTHORITIES)
 public class Authorities implements GrantedAuthority {
 
-    public static final String GUEST = "GUEST";
-    public static final String USER = "USER";
-    public static final String ADMIN = "ADMIN";
+    public static final String ROLE_GUEST = "ROLE_GUEST";
+    public static final String ROLE_USER = "ROLE_USER";
+    public static final String ROLE_ADMIN = "ROLE_ADMIN";
 
     private static final long serialVersionUID = 1L;
 
@@ -28,16 +29,19 @@ public class Authorities implements GrantedAuthority {
     @Column(name = TableConstant.COL_ID)
     private Integer id;
 
-    @Column(name = TableConstant.COL_USERNAME, nullable = false, length = TableConstant.LEN_USERNAME)
-    private String username;
-
     @Column(name = TableConstant.COL_AUTHORITY, nullable = false, length = TableConstant.LEN_AUTHORITY)
     private String authority;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = TableConstant.COL_ID, insertable = false, updatable = false)
-    private Users users;
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "roles")
+    private Set<Users> users = new HashSet<>();
+
+    public Authorities(String authority) {
+        this.authority = authority;
+    }
+
+    public Authorities() {
+    }
 
     public Integer getId() {
         return id;
@@ -45,14 +49,6 @@ public class Authorities implements GrantedAuthority {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     @Override
@@ -64,11 +60,11 @@ public class Authorities implements GrantedAuthority {
         this.authority = authority;
     }
 
-    public Users getUsers() {
+    public Set<Users> getUsers() {
         return users;
     }
 
-    public void setUsers(Users users) {
+    public void setUsers(Set<Users> users) {
         this.users = users;
     }
 }

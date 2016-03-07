@@ -3,9 +3,12 @@ package com.felix.wbc.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.felix.wbc.constant.TableConstant;
 import org.hibernate.validator.constraints.Email;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,7 +18,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = TableConstant.TABLE_USERS)
-public class Users implements Serializable {
+public class Users implements Serializable, UserDetails {
 
     private static final long serialVersionUID = 1L;
 
@@ -36,18 +39,14 @@ public class Users implements Serializable {
     private String password;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "users", fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "users_authorities",
+            joinColumns = { @JoinColumn(name = "users_id") },
+            inverseJoinColumns = { @JoinColumn(name = "authorities_id") })
     private Set<Authorities> roles = new HashSet<>();
 
     public Users() {
-    }
-
-    public Users(Users users) {
-        this.id = users.getId();
-        this.username = users.getUsername();
-        this.email = users.getEmail();
-        this.password = users.getPassword();
-        this.roles = users.getRoles();
     }
 
     public Integer getId() {
@@ -56,10 +55,6 @@ public class Users implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
     }
 
     public void setUsername(String username) {
@@ -74,10 +69,6 @@ public class Users implements Serializable {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
     public void setPassword(String password) {
         this.password = password;
     }
@@ -88,5 +79,40 @@ public class Users implements Serializable {
 
     public void setRoles(Set<Authorities> roles) {
         this.roles = roles;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return getRoles();
+    }
+
+    @Override
+    public String getPassword() {
+        return this.password;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.username;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }
